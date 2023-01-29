@@ -24,16 +24,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ApiService client = ApiService();
+  int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Global News Article",
-              style: TextStyle(color: Colors.black)),
+          title:
+              Text("News App by Jeewan", style: TextStyle(color: Colors.black)),
           backgroundColor: Colors.white),
       body: FutureBuilder(
-        future: client.getArticle(),
+        future: client.getArticle(currentIndex),
         builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
           if (snapshot.hasData) {
             List<Article> articles = snapshot.data;
@@ -47,6 +48,44 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.shifting,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white30,
+        currentIndex: currentIndex,
+        onTap: (index) => {
+          //print(index),
+          setState(() => {
+          currentIndex = index
+        })},
+        showUnselectedLabels: true,
+        items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.airplanemode_active_rounded),
+          label: 'Everything',
+          backgroundColor: Colors.blue,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.phone_android),
+          label: 'Technology',
+          backgroundColor: Colors.red,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.sunny_snowing),
+          label: 'Weather',
+          backgroundColor: Colors.purple,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.book),
+          label: 'Education',
+          backgroundColor: Colors.yellow[800],
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.brush),
+          label: 'Art',
+          backgroundColor: Colors.green,
+        ),
+      ]),
     );
   }
 }
